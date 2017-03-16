@@ -135,7 +135,6 @@ public class BenderTest {
     @Test
     public void test09() {
 
-        //COMENTAR EN CLASE!!
         String mapa = "" +
                 "#######\n" +
                 "#T    #\n" +

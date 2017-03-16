@@ -20,22 +20,23 @@ public class Robot {
         switch (i.getMove(this.posNow)){
             case S:
                 retoorn[0]++;
-                break;
+                return retoorn;
             case N:
                 retoorn[0]--;
-                break;
+                return retoorn;
             case W:
                 retoorn[1]--;
-                break;
+                return retoorn;
             default:
                 retoorn[1]++;
+                return retoorn;
         }
-        return retoorn;
     }
 
     public String getMove(){
         return i.getMove(this.posNow).toString();
     }
+
     void changeDir(){
         i.changeDir();
     }

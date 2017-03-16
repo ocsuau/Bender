@@ -1,34 +1,83 @@
+import java.util.*;
+
 /**
  * Created by Oscar on 15/03/2017.
  */
 public class Bender {
-    private char [][] map;
-    private int [] coordinatesB = new int [2];
-    private int [][] coorTeleport = new int [2][2];
+    private List<List<Character>> mapa = new ArrayList<List<Character>>();
+    private Map<String,Item> items = new HashMap<String , Item>();
 
     public Bender(String mapa) {
         int width = mapa.indexOf("\n");
         int heigth = (mapa.length() % width == 0) ? ((mapa.length() / width) - 1) : mapa.length() / width;
-        map = new char[heigth][width];
+        char [] provisional;
 
+        for (int i = 0, posIni = 0, posFin = width; i < heigth; i++) {
+            this.mapa.add(new ArrayList<Character>());
 
-        for (int i = 0, posIni = 0, posFin = mapa.indexOf("\n"), posT = 0; i < map.length; i++) {
-            map[i] = mapa.substring(posIni,posFin).toCharArray();
-            if(mapa.substring(posIni,posFin).indexOf("X") != -1){
-                this.coordinatesB[0] = i;
-                this.coordinatesB[1] = mapa.substring(posIni,posFin).indexOf("X");
+            provisional = mapa.substring(posIni,posFin).toCharArray();
+
+            for(int j = 0; j < provisional.length; j++){
+                this.mapa.get(i).add((provisional[j] != 'X') ? provisional[j] : ' ');
+
+                if(provisional[j] != ' ' && provisional[j] != '#'){
+                    if(this.items.containsKey(new String(""+provisional[j]))){
+                        this.items.put("T2",new Item(i,j));
+                    }
+                    else{
+                        this.items.put(new String(new String(""+provisional[j])), new Item(i,j));
+                    }
+                }
             }
-            if(mapa.substring(posIni,posFin).indexOf('T') != -1){
-                this.coorTeleport[posT][0] = i;
-                this.coorTeleport[posT++][1] = mapa.substring(posIni,posFin).indexOf('T');
-            }
-
             posIni = posFin + 1;
             posFin = (mapa.indexOf("\n", posIni) == -1) ? mapa.length() : mapa.indexOf("\n", posIni);
         }
     }
 
     public String run(){
+        Robot b = new Robot();
+        int [] proCoor;
+        boolean rebootMove = false;
+        StringBuilder timeToDrink = new StringBuilder();
+        while(true){
+            proCoor = b.moveRobot(this.items.get("X").getPositions());
+            if(this.mapa.get(proCoor[0]).get(proCoor[1]) == '#'){
+                if(rebootMove){
+                    b.setPosNow(0);
+                    rebootMove = false;
+                    continue;
+                }
+                b.setPosNow(b.getPos() + 1);
+                continue;
+            }
+            this.items.put("X",new Item(proCoor[0],proCoor[1]));
+            rebootMove = true;
+            timeToDrink.append(b.getMove());
+            if(this.mapa.get(proCoor[0]).get(proCoor[1]) == ' '){
+                continue;
+            }
+            else if(changeStat(proCoor,b)){
+                return timeToDrink.toString();
+            }
+        }
+    }
+
+    private boolean changeStat(int [] proCoor, Robot b){
+        Item provCoor = new Item(proCoor[0],proCoor[1]);
+        if(this.items.containsKey("I") && this.items.get("I").equals(provCoor)){
+            b.changeDir();
+            b.setPosNow(0);
+        }
+        else if(this.items.containsKey("$") && this.items.get("$").equals(provCoor)){
+            return true;
+        }
+        else {
+            Item newProvCoor = (this.items.get("T").equals(provCoor)) ? this.items.get("T2") : this.items.get("T");
+            this.items.put("X",newProvCoor);
+        }
+        return false;
+    }
+    /*public String run(){
         Robot b = new Robot();
         int [] provisionalCoordinates;
         char proValue;//, lastProValue = ' ';
@@ -70,6 +119,8 @@ public class Bender {
                 b.setPosNow(0);
                 break;
             case 'T':
+                int posx = this.coordinatesB[0];
+                int posy = this.coordinatesB[1];
                 if(this.coordinatesB[0] == this.coorTeleport[0][0] && this.coordinatesB[1] == this.coorTeleport[0][1]){
                     this.coordinatesB[0] = this.coorTeleport[1][0];
                     this.coordinatesB[1] = this.coorTeleport[1][1];
@@ -78,13 +129,11 @@ public class Bender {
                     this.coordinatesB[0] = this.coorTeleport[0][0];
                     this.coordinatesB[1] = this.coorTeleport[0][1];
                 }
+                map[posx][posy] = 'T';
                 break;
-                /*CONTINUAR!!
-                COMPROBAR QUE HACER CUANDO ENCONTRAMOS UNA T, COMPROBAR QUE FUNCIONA, COMPROBAR MUCHAS COSAS.
-                break;*/
             case '$':
                 return true;
         }
         return false;
-    }
+    }*/
 }
