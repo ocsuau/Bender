@@ -1,139 +1,119 @@
 import java.util.*;
-
 /**
  * Created by Oscar on 15/03/2017.
  */
 public class Bender {
-    private List<List<Character>> mapa = new ArrayList<List<Character>>();
-    private Map<String,Item> items = new HashMap<String , Item>();
+    Mapa map;
+    Map<Item, Character> items = new HashMap<Item,Character>();
+    //Map<int [],Character> items = new HashMap<>();
+    private Movement m = new Movement();
+    Item posNow;
 
     public Bender(String mapa) {
-        int width = mapa.indexOf("\n");
-        int heigth = (mapa.length() % width == 0) ? ((mapa.length() / width) - 1) : mapa.length() / width;
-        char [] provisional;
-
-        for (int i = 0, posIni = 0, posFin = width; i < heigth; i++) {
-            this.mapa.add(new ArrayList<Character>());
-
-            provisional = mapa.substring(posIni,posFin).toCharArray();
-
-            for(int j = 0; j < provisional.length; j++){
-                this.mapa.get(i).add((provisional[j] != 'X') ? provisional[j] : ' ');
-
-                if(provisional[j] != ' ' && provisional[j] != '#'){
-                    if(this.items.containsKey(new String(""+provisional[j]))){
-                        this.items.put("T2",new Item(i,j));
-                    }
-                    else{
-                        this.items.put(new String(new String(""+provisional[j])), new Item(i,j));
-                    }
-                }
-            }
-            posIni = posFin + 1;
-            posFin = (mapa.indexOf("\n", posIni) == -1) ? mapa.length() : mapa.indexOf("\n", posIni);
-        }
+        this.map = new Mapa(mapa);
+        posNow = new Item (this.map.getBPos());
+        this.items = this.map.getItems();
     }
 
     public String run(){
-        Robot b = new Robot();
-        int [] proCoor;
+        Item proCoor;
         boolean rebootMove = false;
         StringBuilder timeToDrink = new StringBuilder();
         while(true){
-            proCoor = b.moveRobot(this.items.get("X").getPositions());
-            if(this.mapa.get(proCoor[0]).get(proCoor[1]) == '#'){
+            proCoor = new Item (this.moveRobot(posNow));
+            if(this.map.getChar(proCoor.getPosition()) == '#'){
                 if(rebootMove){
-                    b.setPosNow(0);
+                    this.m.setDirNow(0);
                     rebootMove = false;
                     continue;
                 }
-                b.setPosNow(b.getPos() + 1);
+                this.m.setDirNow(this.m.getDirNow() + 1);
                 continue;
             }
-            this.items.put("X",new Item(proCoor[0],proCoor[1]));
+            this.posNow.setPosition(proCoor.getPosition());
             rebootMove = true;
-            timeToDrink.append(b.getMove());
-            if(this.mapa.get(proCoor[0]).get(proCoor[1]) == ' '){
+            timeToDrink.append(this.getMove());
+            if(this.map.getChar(proCoor.getPosition()) == ' '){
                 continue;
             }
-            else if(changeStat(proCoor,b)){
+            else if(changeStat(proCoor)){
                 return timeToDrink.toString();
             }
         }
     }
 
-    private boolean changeStat(int [] proCoor, Robot b){
-        Item provCoor = new Item(proCoor[0],proCoor[1]);
-        if(this.items.containsKey("I") && this.items.get("I").equals(provCoor)){
-            b.changeDir();
-            b.setPosNow(0);
+    private boolean changeStat(Item proCoor){
+        if(this.items.get(proCoor) == 'I'){
+            this.m.changeDir();
+            this.m.setDirNow(0);
         }
-        else if(this.items.containsKey("$") && this.items.get("$").equals(provCoor)){
+        else if(this.items.get(proCoor) == '$'){
+            return true;
+        }
+        else if(this.items.get(proCoor) == 'T'){
+            this.getTeleport(proCoor);
+        }
+        //if(this.map.containsItem(this.map.getChar(proCoor))){}
+        /*Item provCoor = new Item(proCoor[0],proCoor[1]);
+        if(this.map.containsItem(provCoor) && this.map.getItemChar(provCoor) == 'I'){
+            this.changeDir();
+            this.setDirNow(0);
+        }
+        else if(this.map.getItemChar(provCoor) == '$'){
             return true;
         }
         else {
+            this.posNow = map.calcTeleport(provCoor);
             Item newProvCoor = (this.items.get("T").equals(provCoor)) ? this.items.get("T2") : this.items.get("T");
             this.items.put("X",newProvCoor);
-        }
+        }*/
         return false;
     }
-    /*public String run(){
-        Robot b = new Robot();
-        int [] provisionalCoordinates;
-        char proValue;//, lastProValue = ' ';
-        boolean rebootMove = false;
-        StringBuilder timeToDrink = new StringBuilder();
-        while(true){
-            provisionalCoordinates = b.moveRobot(this.coordinatesB);
-            if(map[provisionalCoordinates[0]][provisionalCoordinates[1]] == '#'){
-                if(rebootMove){
-                    b.setPosNow(0);
-                    rebootMove = false;
-                    continue;
-                }
-                b.setPosNow(b.getPos() + 1);
-                continue;
-            }
-            else{
-                proValue = map[provisionalCoordinates[0]][provisionalCoordinates[1]];
-                map[provisionalCoordinates[0]][provisionalCoordinates[1]] = 'X';
-                map[this.coordinatesB[0]][this.coordinatesB[1]] = ' ';
-                this.coordinatesB = provisionalCoordinates;
-                timeToDrink.append(b.getMove());
-                //lastProValue = proValue;
-                rebootMove = true;
 
 
-                if(changeStat(proValue,b)){
-                    return timeToDrink.toString();
-                }
-            }
 
+    private int [] moveRobot(Item posNow){
+        int [] retoorn = new int [posNow.getPosition().length];
+        System.arraycopy(posNow.getPosition(),0,retoorn,0,2);
+        switch (m.getMove()){
+            case S:
+                retoorn[0]++;
+                return retoorn;
+            case N:
+                retoorn[0]--;
+                return retoorn;
+            case W:
+                retoorn[1]--;
+                return retoorn;
+            default:
+                retoorn[1]++;
+                return retoorn;
         }
     }
 
-    private boolean changeStat(char proValue, Robot b) {
-        switch (proValue){
-            case 'I':
-                b.changeDir();
-                b.setPosNow(0);
+    private String getMove(){
+        return m.getMove().toString();
+    }
+
+    private void changeDir(){
+        m.changeDir();
+    }
+
+    private void getTeleport(Item proCoor){
+        /*Set<int []> keys = this.items.keySet();
+        Iterator itKeys = keys.iterator();
+        while(itKeys.hasNext()){
+            int [] provition = (int []) itKeys.next();
+            if(this.items.get(provition) == 'T' && !provition.equals(proCoor)){
+                this.posNow.setPosition(provition);*/
+        Set<Item> keys = this.items.keySet();
+        Iterator itKeys = keys.iterator();
+        while(itKeys.hasNext()){
+            Item provition = (Item) itKeys.next();
+            if(this.items.get(provition) == 'T' && !provition.equals(proCoor)){
+                this.posNow.setPosition(provition.getPosition());
                 break;
-            case 'T':
-                int posx = this.coordinatesB[0];
-                int posy = this.coordinatesB[1];
-                if(this.coordinatesB[0] == this.coorTeleport[0][0] && this.coordinatesB[1] == this.coorTeleport[0][1]){
-                    this.coordinatesB[0] = this.coorTeleport[1][0];
-                    this.coordinatesB[1] = this.coorTeleport[1][1];
-                }
-                else{
-                    this.coordinatesB[0] = this.coorTeleport[0][0];
-                    this.coordinatesB[1] = this.coorTeleport[0][1];
-                }
-                map[posx][posy] = 'T';
-                break;
-            case '$':
-                return true;
+            }
         }
-        return false;
-    }*/
+    }
 }
