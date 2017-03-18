@@ -3,15 +3,16 @@ import java.util.*;
  * Created by Oscar on 15/03/2017.
  */
 public class Bender {
-    Mapa map;
-    Map<Item, Character> items = new HashMap<Item,Character>();
-    //Map<int [],Character> items = new HashMap<>();
+    private Mapa map;
+    private Map<Item, Character> items = new HashMap<Item,Character>();
+    private Map<Item,Integer> todayNotDrink = new HashMap<Item,Integer>();
     private Movement m = new Movement();
-    Item posNow;
+    private Item posNow;
 
     public Bender(String mapa) {
         this.map = new Mapa(mapa);
         posNow = new Item (this.map.getBPos());
+        todayNotDrink.put(posNow,1);
         this.items = this.map.getItems();
     }
 
@@ -19,6 +20,7 @@ public class Bender {
         Item proCoor;
         boolean rebootMove = false;
         StringBuilder timeToDrink = new StringBuilder();
+
         while(true){
             proCoor = new Item (this.moveRobot(posNow));
             if(this.map.getChar(proCoor.getPosition()) == '#'){
@@ -33,6 +35,9 @@ public class Bender {
             this.posNow.setPosition(proCoor.getPosition());
             rebootMove = true;
             timeToDrink.append(this.getMove());
+            if(notExit(proCoor)){
+                return null;
+            }
             if(this.map.getChar(proCoor.getPosition()) == ' '){
                 continue;
             }
@@ -53,20 +58,6 @@ public class Bender {
         else if(this.items.get(proCoor) == 'T'){
             this.getTeleport(proCoor);
         }
-        //if(this.map.containsItem(this.map.getChar(proCoor))){}
-        /*Item provCoor = new Item(proCoor[0],proCoor[1]);
-        if(this.map.containsItem(provCoor) && this.map.getItemChar(provCoor) == 'I'){
-            this.changeDir();
-            this.setDirNow(0);
-        }
-        else if(this.map.getItemChar(provCoor) == '$'){
-            return true;
-        }
-        else {
-            this.posNow = map.calcTeleport(provCoor);
-            Item newProvCoor = (this.items.get("T").equals(provCoor)) ? this.items.get("T2") : this.items.get("T");
-            this.items.put("X",newProvCoor);
-        }*/
         return false;
     }
 
@@ -95,17 +86,7 @@ public class Bender {
         return m.getMove().toString();
     }
 
-    private void changeDir(){
-        m.changeDir();
-    }
-
     private void getTeleport(Item proCoor){
-        /*Set<int []> keys = this.items.keySet();
-        Iterator itKeys = keys.iterator();
-        while(itKeys.hasNext()){
-            int [] provition = (int []) itKeys.next();
-            if(this.items.get(provition) == 'T' && !provition.equals(proCoor)){
-                this.posNow.setPosition(provition);*/
         Set<Item> keys = this.items.keySet();
         Iterator itKeys = keys.iterator();
         while(itKeys.hasNext()){
@@ -115,5 +96,12 @@ public class Bender {
                 break;
             }
         }
+    }
+
+    private boolean notExit(Item proCoor){
+        int quantity = (todayNotDrink.containsKey(proCoor)) ? todayNotDrink.get(proCoor) : 0;
+        todayNotDrink.put(proCoor,quantity + 1);
+        if(todayNotDrink.get(proCoor) > 4){return true;}
+        return false;
     }
 }

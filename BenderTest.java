@@ -237,4 +237,53 @@ public class BenderTest {
         Bender bender = new Bender(mapa);
         assertEquals("SSSSSEEENNNNNEEEEEEEE", bender.run());
     }
+
+    @Test
+    public void test16() {
+        String mapa = "" +
+                "############\n" +
+                "#          #\n" +
+                "#      #####\n" +
+                "#$     #\n" +
+                "#### T #######\n" +
+                "   #      X ##\n" +
+                "   # T       #\n" +
+                "   ###   #####\n" +
+                "     #I  #  \n" +
+                "     #####  \n";
+        Bender bender = new Bender(mapa);
+        assertEquals("SEEWWWWWWWWSSEESSSSNNNNNNNWWWWWSS", bender.run());
+    }
+
+    @Test
+    public void test17() {
+        String mapa = "" +
+                "############\n" +
+                "#    I     #\n" +
+                "#      #####\n" +
+                "#$     #\n" +
+                "#### T #######\n" +
+                "   #      X ##\n" +
+                "   # T       #\n" +
+                "   ###   #####\n" +
+                "     #I  #  \n" +
+                "     #####  \n";
+        Bender bender = new Bender(mapa);
+        assertNull(bender.run());
+    }
+
+    @Test
+    public void test18() {
+        String mapa = "" +
+                "#######\n" +
+                "#    I#\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "# $X  #\n" +
+                "#     #\n" +
+                "#######";
+        Bender bender = new Bender(mapa);
+        assertNull(bender.run());
+    }
 }

@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 /**
  * Created by Oscar on 17/03/2017.
  */
-class Movement {
+public class Movement {
     enum TMove{
         S,
         E,

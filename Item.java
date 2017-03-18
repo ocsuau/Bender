@@ -1,11 +1,7 @@
 import java.util.*;
-
 /**
  * Created by Oscar on 16/03/2017.
  */
-
-
-//PENSARSE SERIAMENTE MANTENER O QUITAR LA INTERFICIE. DA MÁS PROBLEMAS QUE SOLUCIONES.
 public class Item{
     private int [] position = new int [2];
 
