@@ -17,10 +17,7 @@ public class Bender {
     }
 
     public String run(){
-
-        if(this.posNow.getPosition()[0] == -1 || !this.items.containsValue('$')){
-            return null;
-        }
+        if(this.posNow.getPosition()[0] == -1 || !this.items.containsValue('$')){ return null; }
         Item proCoor;
         boolean rebootMove = false;
         StringBuilder timeToDrink = new StringBuilder();
@@ -64,8 +61,6 @@ public class Bender {
         }
         return false;
     }
-
-
 
     private int [] moveRobot(Item posNow){
         int [] retoorn = new int [posNow.getPosition().length];

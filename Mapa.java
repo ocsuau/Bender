@@ -27,7 +27,6 @@ public class Mapa {
     public int [] getBPos(){
         Set<Item> keys = this.items.keySet();
         Iterator it = keys.iterator();
-
         while(it.hasNext()){
             Item provisional = (Item)it.next();
             if(this.items.get(provisional) == 'X'){
@@ -38,9 +37,7 @@ public class Mapa {
         return null;
     }
 
-    public Map<Item,Character> getItems(){
-        return this.items;
-    }
+    public Map<Item,Character> getItems(){ return this.items; }
 
     public char getChar(int [] positions){
         return this.map.get(positions[0]).get(positions[1]);
