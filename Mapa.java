@@ -17,8 +17,7 @@ public class Mapa {
                 this.map.get(i).add((lineMap[i].charAt(j) != 'X') ? lineMap[i].charAt(j) : ' ');
 
                 if(lineMap[i].charAt(j) != ' ' && lineMap[i].charAt(j) != '#'){
-                    int [] nItem = {i,j};
-                    this.items.put(new Item(nItem),lineMap[i].charAt(j));
+                    this.items.put(new Item(new int[]{i, j}), lineMap[i].charAt(j));
                 }
             }
         }
@@ -34,7 +33,7 @@ public class Mapa {
                 return provisional.getPosition();
             }
         }
-        return null;
+        return new int[]{-1, -1};
     }
 
     public Map<Item,Character> getItems(){ return this.items; }

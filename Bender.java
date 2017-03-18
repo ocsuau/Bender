@@ -99,8 +99,8 @@ public class Bender {
 
     private boolean notExit(Item proCoor){
         int quantity = (todayNotDrink.containsKey(proCoor)) ? todayNotDrink.get(proCoor) : 0;
+        if (quantity == 4) return true;
         todayNotDrink.put(proCoor,quantity + 1);
-        if(todayNotDrink.get(proCoor) > 4){return true;}
         return false;
     }
 }

@@ -6,14 +6,8 @@ public class Item{
     private int [] position = new int [2];
 
     public Item(int [] position){
-        if(position == null){
-            this.position[0] = -1;
-            this.position[1] = -1;
-        }
-        else {
             this.position[0] = position[0];
             this.position[1] = position[1];
-        }
     }
 
     public int [] getPosition(){
