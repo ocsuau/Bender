@@ -23,7 +23,8 @@ public class Bender {
         StringBuilder timeToDrink = new StringBuilder();
 
         while(true){
-            proCoor = new Item (this.moveRobot(posNow));
+            //proCoor = new Item (this.moveRobot(posNow));
+            proCoor = new Item(this.m.moving(posNow));
             if(this.map.getChar(proCoor.getPosition()) == '#'){
                 if(rebootMove){
                     this.m.setDirNow(0);
@@ -35,7 +36,7 @@ public class Bender {
             }
             this.posNow.setPosition(proCoor.getPosition());
             rebootMove = true;
-            timeToDrink.append(this.getMove());
+            timeToDrink.append(m.getMove().toString());
             if(notExit(proCoor)){
                 return null;
             }
@@ -60,29 +61,6 @@ public class Bender {
             this.getTeleport(proCoor);
         }
         return false;
-    }
-
-    private int [] moveRobot(Item posNow){
-        int [] retoorn = new int [posNow.getPosition().length];
-        System.arraycopy(posNow.getPosition(),0,retoorn,0,2);
-        switch (m.getMove()){
-            case S:
-                retoorn[0]++;
-                return retoorn;
-            case N:
-                retoorn[0]--;
-                return retoorn;
-            case W:
-                retoorn[1]--;
-                return retoorn;
-            default:
-                retoorn[1]++;
-                return retoorn;
-        }
-    }
-
-    private String getMove(){
-        return m.getMove().toString();
     }
 
     private void getTeleport(Item proCoor){

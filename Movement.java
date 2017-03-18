@@ -39,4 +39,23 @@ public class Movement {
             this.move.set(i,provisional);
         }
     }
+
+    public int[] moving(Item posNow) {
+        int[] retoorn = new int[posNow.getPosition().length];
+        System.arraycopy(posNow.getPosition(), 0, retoorn, 0, 2);
+        switch (this.getMove()) {
+            case S:
+                retoorn[0]++;
+                return retoorn;
+            case N:
+                retoorn[0]--;
+                return retoorn;
+            case W:
+                retoorn[1]--;
+                return retoorn;
+            default:
+                retoorn[1]++;
+                return retoorn;
+        }
+    }
 }
