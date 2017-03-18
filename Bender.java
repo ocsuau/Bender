@@ -17,6 +17,10 @@ public class Bender {
     }
 
     public String run(){
+
+        if(this.posNow.getPosition()[0] == -1 || !this.items.containsValue('$')){
+            return null;
+        }
         Item proCoor;
         boolean rebootMove = false;
         StringBuilder timeToDrink = new StringBuilder();

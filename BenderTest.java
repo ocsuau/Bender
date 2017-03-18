@@ -286,4 +286,32 @@ public class BenderTest {
         Bender bender = new Bender(mapa);
         assertNull(bender.run());
     }
+    @Test
+    public void test19() {
+        String mapa = "" +
+                "#######\n" +
+                "#    I#\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "# $   #\n" +
+                "#     #\n" +
+                "#######";
+        Bender bender = new Bender(mapa);
+        assertNull(bender.run());
+    }
+    @Test
+    public void test20() {
+        String mapa = "" +
+                "#######\n" +
+                "#    I#\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "#  X  #\n" +
+                "#     #\n" +
+                "#######";
+        Bender bender = new Bender(mapa);
+        assertNull(bender.run());
+    }
 }
