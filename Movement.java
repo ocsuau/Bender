@@ -40,7 +40,7 @@ class Movement {
         }
     }
 
-    int[] moving(Item posNow) {
+    int[] moving(Position posNow) {
         int[] retoorn = new int[posNow.getPosition().length];
         System.arraycopy(posNow.getPosition(), 0, retoorn, 0, 2);
         switch (this.getMove()) {

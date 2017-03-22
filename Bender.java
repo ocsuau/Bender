@@ -4,11 +4,11 @@ import java.util.*;
  */
 public class Bender {
     private Mapa map;
-    private List<Item> teleports = new ArrayList<Item>();
-    private Map<Item,Integer> todayNotDrink = new HashMap<Item,Integer>();
+    private Set<Position> teleports = new HashSet<Position>();
+    private Map<Position, Integer> todayNotDrink = new HashMap<Position, Integer>();
     private Movement m = new Movement();
-    private Item posNowBender;
-    private Item posNowWinner;
+    private Position posNowBender;
+    private Position posNowWinner;
 
     public Bender(String mapa) {
         this.map = new Mapa(mapa);
@@ -22,12 +22,12 @@ public class Bender {
         if (this.posNowBender.getPosition()[0] == -1 || this.posNowWinner.getPosition()[0] == -1) {
             return null;
         }
-        Item proCoor;
+        Position proCoor;
         boolean rebootMove = false;
         StringBuilder timeToDrink = new StringBuilder();
 
         while(true){
-            proCoor = new Item(this.m.moving(posNowBender));
+            proCoor = new Position(this.m.moving(posNowBender));
             if(this.map.getChar(proCoor.getPosition()) == '#'){
                 if(rebootMove){
                     this.m.setDirNow(0);
@@ -52,24 +52,24 @@ public class Bender {
         }
     }
 
-    private boolean changeStat(Item proCoor){
+    private boolean changeStat(Position proCoor) {
         char c = this.map.getChar(proCoor.getPosition());
         switch (c) {
             case 'I':
                 this.m.changeDir();
                 this.m.setDirNow(0);
                 break;
-            case '$':
-                return true;
             case 'T':
                 this.getTeleport(proCoor);
                 break;
+            case '$':
+                return true;
         }
         return false;
     }
 
-    private void getTeleport(Item proCoor){
-        for (Item i : this.teleports) {
+    private void getTeleport(Position proCoor) {
+        for (Position i : this.teleports) {
             if (!i.equals(proCoor)) {
                 this.posNowBender.setPosition(i.getPosition());
                 break;
@@ -77,7 +77,7 @@ public class Bender {
         }
     }
 
-    private boolean notExit(Item proCoor){
+    private boolean notExit(Position proCoor) {
         int quantity = (todayNotDrink.containsKey(proCoor)) ? todayNotDrink.get(proCoor) : 0;
         if (quantity == 4) return true;
         todayNotDrink.put(proCoor,quantity + 1);
