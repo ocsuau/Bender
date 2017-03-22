@@ -2,39 +2,51 @@ import java.util.*;
 /**
  * Created by Oscar on 16/03/2017.
  */
-public class Mapa {
-    List<List<Character>> map = new ArrayList<>();
-    Map<Item, Character> items = new HashMap<>();
+class Mapa {
+    private List<List<Character>> map = new ArrayList<>();
+    private List<Item> teleports = new ArrayList<>();
+    private Item bPos;
+    private Item wPos;
 
-    public Mapa(String mapa){
+    Mapa(String mapa) {
         String [] lineMap = mapa.split("\n");
         for(int i = 0; i < lineMap.length; i++){
             this.map.add(new ArrayList<Character>());
             for(int j = 0; j < lineMap[i].length(); j++){
-                this.map.get(i).add((lineMap[i].charAt(j) != 'X') ? lineMap[i].charAt(j) : ' ');
-                if(lineMap[i].charAt(j) != ' ' && lineMap[i].charAt(j) != '#'){
-                    this.items.put(new Item(new int[]{i, j}), lineMap[i].charAt(j));
+                if (lineMap[i].charAt(j) == 'X') {
+                    this.map.get(i).add(' ');
+                    this.bPos = new Item(new int[]{i, j});
+                    continue;
+                } else if (lineMap[i].charAt(j) == '$') {
+                    this.wPos = new Item(new int[]{i, j});
+                }
+                this.map.get(i).add(lineMap[i].charAt(j));
+                if (lineMap[i].charAt(j) == 'T') {
+                    this.teleports.add(new Item(new int[]{i, j}));
                 }
             }
         }
     }
 
-    public int [] getBPos(){
-        Set<Item> keys = this.items.keySet();
-        Iterator it = keys.iterator();
-        while(it.hasNext()){
-            Item provisional = (Item)it.next();
-            if(this.items.get(provisional) == 'X'){
-                this.items.remove(provisional);
-                return provisional.getPosition();
-            }
+    Item getBPos() {
+        if (this.bPos != null) {
+            return this.bPos;
         }
-        return new int[]{-1, -1};
+        return new Item(new int[]{-1, -1});
     }
 
-    public Map<Item,Character> getItems(){ return this.items; }
+    List<Item> getTeleports() {
+        return this.teleports;
+    }
 
-    public char getChar(int [] positions){
+    char getChar(int[] positions) {
         return this.map.get(positions[0]).get(positions[1]);
+    }
+
+    Item getWinner() {
+        if (this.wPos != null) {
+            return this.wPos;
+        }
+        return new Item(new int[]{-1, -1});
     }
 }

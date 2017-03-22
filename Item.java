@@ -2,19 +2,19 @@ import java.util.*;
 /**
  * Created by Oscar on 16/03/2017.
  */
-public class Item{
+class Item {
     private int [] position = new int [2];
 
-    public Item(int [] position){
+    Item(int[] position) {
             this.position[0] = position[0];
             this.position[1] = position[1];
     }
 
-    public int [] getPosition(){
+    int[] getPosition() {
         return this.position;
     }
 
-    public void setPosition(int [] proCoor){
+    void setPosition(int[] proCoor) {
         this.position[0] = proCoor[0];
         this.position[1] = proCoor[1];
     }
@@ -35,4 +35,3 @@ public class Item{
         return (31 * result + c);
     }
 }
-

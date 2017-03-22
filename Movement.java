@@ -4,7 +4,7 @@ import java.util.List;
 /**
  * Created by Oscar on 17/03/2017.
  */
-public class Movement {
+class Movement {
     enum TMove{
         S,
         E,
@@ -15,23 +15,23 @@ public class Movement {
     private List<TMove> move = new ArrayList<>();
     private int dirNow;
 
-    public Movement(){
+    Movement() {
         Collections.addAll(this.move,TMove.values());
     }
 
-    public TMove getMove(){
+    TMove getMove() {
         return this.move.get(this.dirNow);
     }
 
-    public int getDirNow(){
+    int getDirNow() {
         return this.dirNow;
     }
 
-    public void setDirNow(int pos){
+    void setDirNow(int pos) {
         this.dirNow = (pos > 3) ? 0 : pos;
     }
 
-    public void changeDir(){
+    void changeDir() {
         TMove provisional;
         for(int i = 0; i < 2; i++){
             provisional = this.move.get(i + 2);
@@ -40,7 +40,7 @@ public class Movement {
         }
     }
 
-    public int[] moving(Item posNow) {
+    int[] moving(Item posNow) {
         int[] retoorn = new int[posNow.getPosition().length];
         System.arraycopy(posNow.getPosition(), 0, retoorn, 0, 2);
         switch (this.getMove()) {

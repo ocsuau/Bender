@@ -4,27 +4,30 @@ import java.util.*;
  */
 public class Bender {
     private Mapa map;
-    private Map<Item, Character> items = new HashMap<Item,Character>();
+    private List<Item> teleports = new ArrayList<Item>();
     private Map<Item,Integer> todayNotDrink = new HashMap<Item,Integer>();
     private Movement m = new Movement();
-    private Item posNow;
+    private Item posNowBender;
+    private Item posNowWinner;
 
     public Bender(String mapa) {
         this.map = new Mapa(mapa);
-        posNow = new Item (this.map.getBPos());
-        todayNotDrink.put(posNow,1);
-        this.items = this.map.getItems();
+        posNowBender = this.map.getBPos();
+        todayNotDrink.put(posNowBender, 1);
+        this.teleports = this.map.getTeleports();
+        this.posNowWinner = this.map.getWinner();
     }
 
     public String run(){
-        if(this.posNow.getPosition()[0] == -1 || !this.items.containsValue('$')){ return null; }
+        if (this.posNowBender.getPosition()[0] == -1 || this.posNowWinner.getPosition()[0] == -1) {
+            return null;
+        }
         Item proCoor;
         boolean rebootMove = false;
         StringBuilder timeToDrink = new StringBuilder();
 
         while(true){
-            //proCoor = new Item (this.moveRobot(posNow));
-            proCoor = new Item(this.m.moving(posNow));
+            proCoor = new Item(this.m.moving(posNowBender));
             if(this.map.getChar(proCoor.getPosition()) == '#'){
                 if(rebootMove){
                     this.m.setDirNow(0);
@@ -34,7 +37,7 @@ public class Bender {
                 this.m.setDirNow(this.m.getDirNow() + 1);
                 continue;
             }
-            this.posNow.setPosition(proCoor.getPosition());
+            this.posNowBender.setPosition(proCoor.getPosition());
             rebootMove = true;
             timeToDrink.append(m.getMove().toString());
             if(notExit(proCoor)){
@@ -50,26 +53,25 @@ public class Bender {
     }
 
     private boolean changeStat(Item proCoor){
-        if(this.items.get(proCoor) == 'I'){
-            this.m.changeDir();
-            this.m.setDirNow(0);
-        }
-        else if(this.items.get(proCoor) == '$'){
-            return true;
-        }
-        else if(this.items.get(proCoor) == 'T'){
-            this.getTeleport(proCoor);
+        char c = this.map.getChar(proCoor.getPosition());
+        switch (c) {
+            case 'I':
+                this.m.changeDir();
+                this.m.setDirNow(0);
+                break;
+            case '$':
+                return true;
+            case 'T':
+                this.getTeleport(proCoor);
+                break;
         }
         return false;
     }
 
     private void getTeleport(Item proCoor){
-        Set<Item> keys = this.items.keySet();
-        Iterator itKeys = keys.iterator();
-        while(itKeys.hasNext()){
-            Item provition = (Item) itKeys.next();
-            if(this.items.get(provition) == 'T' && !provition.equals(proCoor)){
-                this.posNow.setPosition(provition.getPosition());
+        for (Item i : this.teleports) {
+            if (!i.equals(proCoor)) {
+                this.posNowBender.setPosition(i.getPosition());
                 break;
             }
         }
