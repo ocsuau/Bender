@@ -39,7 +39,7 @@ public class Bender {
             }
             this.posNowBender.setPosition(proCoor.getPosition());
             rebootMove = true;
-            timeToDrink.append(m.getMove().toString());
+            timeToDrink.append(m.getMove());
             if(notExit(proCoor)){
                 return null;
             }
