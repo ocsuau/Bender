@@ -28,7 +28,8 @@ public class Bender {
     /*- Inicializamos la variable map pasándole como parámetro el mapa que nos han pasado*/
         this.map = new Mapa(mapa);
 
-    /*- Inicializamos la variable posNowBender, donde almacenamos la posición inicial del robot, que será igual al valores que nos retorne el método getBPos() de la clase Mapa*/
+    /*- Inicializamos la variable posNowBender, donde almacenamos la posición inicial del robot, que será igual al valores que nos
+    retorne el método getBPos() de la clase Mapa*/
         this.posNowBender = this.map.getBPos();
 
     /*- Inicializamos la variable notExit, donde introducimos el primer elemento cuyo índice será la posición inicial de Bender
@@ -114,41 +115,67 @@ public class Bender {
         }
     }
 
+    /*Método changeStat, donde evaluamos sobre qué carácter ha pasado Bender. (En este punto sabemos que Bender no está encima de
+    un espacio, por lo tanto sólo puede ser uno de los carácteres especiales)*/
     private boolean changeStat(Position proCoor) {
+
+        /*Almacenamos el carácter del mapa en la posición equivalente a la posición actual de Bender.*/
         char c = this.map.getChar(proCoor.getPosition());
         switch (c) {
+
+            /*Si el carácter es una I, cambiamos el orden de preferencias de dirección de Bender a través del método changeDir de la
+            variable m (instancia de la clase Movement) y reiniciamos el índice del movimiento que le toca hacer a Bender a través del
+            método setDirNow de la misma variable*/
             case 'I':
                 this.m.changeDir();
                 this.m.setDirNow(0);
                 break;
+
+            /*Si el carácter es una T, accedemos al método getTeleport para evaluar la nueva posición de Bender*/
             case 'T':
                 this.getTeleport(proCoor);
                 break;
+
+            /*Finalmente si el carácter es un $, significa que Bender ha llegado a la condición de victoria y retornamos true*/
             case '$':
                 return true;
         }
+
+        /*Llegados a éste punto significa que Bender no ha llegado a la condición de victoria, por lo tanto retornamos false.*/
         return false;
     }
 
-
+    /*Método getTeleport, donde comparamos las posiciones de los teleports del mapa con la posición actual de Bender, (La comparación
+    la hacemos a través del método equals de la clase Position) de tal forma que si las posiciones no coinciden, la nueva posición
+    de Bender será la posición del teleport que estemos tratando en ése momento.*/
     private void getTeleport(Position proCoor) {
         for (Position i : this.teleports) {
             if (!i.equals(proCoor)) {
                 this.posNowBender.setPosition(i.getPosition());
-                break;
+                return;
             }
         }
     }
 
+    /*Método notExit, donde evaluamos si el mapa tiene solución o no.*/
     private boolean notExit(Position proCoor) {
+        /*Si la posición que queremos evaluar ya existe como índice de nuestro mapa, comprobamos el valor que indexa. En caso de que
+        el valor sea 4, significa que el Bender ya ha pasado 5 veces por la misma posición y, por lo tanto, no tiene solución, porque
+        está repitiendo caminos. (El límite está en 4 ya que son el número de posibles direcciones que puede tomar Bender) En dicho caso
+        retornamos true*/
         if (this.notExit.containsKey(proCoor)) {
             if (this.notExit.get(proCoor) == 4) {
                 return true;
             }
+            /*En este punto sabemos que la posición que estamos tratando existe como índice pero el valor que indexa no es igual a 4, por
+            lo tanto, introducimos en el mapa la misma posición incrementando el valor en 1*/
             this.notExit.put(proCoor, this.notExit.get(proCoor) + 1);
         } else {
+            /*En este punto sabemos que la posición que nos han pasado no existe como índice en nuestro mapa, así que lo introducimos
+            indicando como valor un 1*/
             this.notExit.put(proCoor, 1);
         }
+        /*Retornamos false para indicar que el mapa aún podría tener solución*/
         return false;
     }
 }
