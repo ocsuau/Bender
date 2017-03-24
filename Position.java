@@ -36,7 +36,6 @@ class Position {
         return false;
     }
 
-
     /*Realizamos override del método hashCode porque utilizamos la clase como índice de un contenedor map y es tipo de un
     conjunto(set)*/
     @Override
