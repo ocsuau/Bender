@@ -11,9 +11,9 @@ public class Bender {
     /*Variable teleports, conjunto donde almacenaremos las posiciones de los teleports que pueda tener el mapa*/
     private Set<Position> teleports;
 
-    /*Variable noExit, donde iremos almacenando las posiciones y direcciones por las que pasa el robot para comprobar si el mapa
-    tiene solución*/
-    private Map<Position, Set<Character>> notExit = new HashMap<>();
+    /*Variable noExit, donde iremos almacenando las posiciones por las que pasa el robot y la cantidad de veces que pasa por cada
+    posición para comprobar si el mapa tiene solución*/
+    private Map<Position, Integer> notExit = new HashMap<>();
 
     /*Variable m, instancia de la clase Movement para gestionar los movimientos del robot*/
     private Movement m = new Movement();
@@ -32,10 +32,8 @@ public class Bender {
         this.posNowBender = this.map.getBPos();
 
     /*- Inicializamos la variable notExit, donde introducimos el primer elemento cuyo índice será la posición inicial de Bender
-    y cuyo valor será una nueva instancia de Lista SET de carácteres. Posteriormente, en dicha instancia introducimos su primer valor,
-    que será la dirección inicial del robot (RAZONAMIENTO DEL USO DE ESTE MAPA EN LA DOCUMENTACIÓN)*/
-        this.notExit.put(posNowBender, new HashSet<Character>());
-        this.notExit.get(posNowBender).add(this.m.getMove());
+    y cuyo valor será 1 (Iniciamos el contador de veces que ha pasado Bender pos esa posición)*/
+        this.notExit.put(posNowBender, 1);
 
     /*- Inicializamos la variable teleports, donde almacenamos la posición de los teleports del mapa, en caso de que existan (teleports
     puede contener valores nulos, pero no afectan al desarrollo del software)*/
@@ -96,8 +94,7 @@ public class Bender {
             timeToDrink.append(m.getMove());
 
             /*Comprobamos si el mapa tiene salida o no en el método notExit() en función de la cantidad de veces que hemos pasado
-            sobre una posición y la direcciones que estaba tomando Bender al momento de pasar sobre dichas posiciones
-            (almacenándolas en la variables notExit)*/
+            sobre una posición (almacenando dicha cantidad en la variables notExit)*/
             if(notExit(proCoor)){
                 return null;
             }
@@ -145,13 +142,13 @@ public class Bender {
 
     private boolean notExit(Position proCoor) {
         if (this.notExit.containsKey(proCoor)) {
-            if (this.notExit.get(proCoor).contains(this.m.getMove())) {
+            if (this.notExit.get(proCoor) == 4) {
                 return true;
             }
+            this.notExit.put(proCoor, this.notExit.get(proCoor) + 1);
         } else {
-            this.notExit.put(proCoor, new HashSet<Character>());
+            this.notExit.put(proCoor, 1);
         }
-        this.notExit.get(proCoor).add(this.m.getMove());
         return false;
     }
 }

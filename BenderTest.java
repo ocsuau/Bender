@@ -404,4 +404,16 @@ public class BenderTest {
         Bender bender = new Bender(mapa);
         assertNull(bender.run());
     }
+
+    @Test
+    public void test27() {
+        String mapa = "" +
+                "#######\n" +
+                "# #   #\n" +
+                "#  X  #\n" +
+                "#  I $#\n" +
+                "#######";
+        Bender bender = new Bender(mapa);
+        assertEquals("SNNSSEE", bender.run());
+    }
 }
