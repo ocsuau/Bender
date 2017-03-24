@@ -377,4 +377,19 @@ public class BenderTest {
         Bender bender = new Bender(mapa);
         assertEquals("SNNNNNNWWWWWWWWWWWW", bender.run());
     }
+
+    @Test
+    public void test25() {
+        String mapa = "" +
+                "#######\n" +
+                "# #  I#\n" +
+                "#     #\n" +
+                "#  T  #\n" +
+                "#  #  #\n" +
+                "#  X  #\n" +
+                "#$    #\n" +
+                "#######";
+        Bender bender = new Bender(mapa);
+        assertNull(bender.run());
+    }
 }

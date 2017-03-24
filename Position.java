@@ -2,31 +2,31 @@ import java.util.Arrays;
 /**
  * Created by Oscar on 16/03/2017.
  */
-/*CLASE Position, DONDE IREMOS CREANDO LAS INSTANCIAS DONDE ALMACENAREMOS LAS POSICIONES DE LOS ÍTEMS QUE NOS INTERESEN GUARDAR*/
+/*Clase Position, donde iremos creando las instancias donde almacenaremos las posiciones de los ítems que nos interesen guardar*/
 class Position {
-    /*VARIABLE DONDE ALMACENAREMOS LAS COORDENADAS DEL OBJETO EN CUESTIÓN*/
+    /*Variable donde almacenaremos las coordenadas del objeto en cuestión*/
     private int [] position = new int [2];
 
-    /*CONSTRUCTOR DONDE ASIGNAMOS LOS PARÁMETROS EN LAS POSICIONES CORRESPONDIENTES DE LA VARIABLE position
-    (ELEMENTO 0 -> COORDENADA X / ELEMENTO 1 -> COORDENADA Y)*/
+    /*Constructor donde asignamos los parámetros en las posiciones correspondientes de la variable position
+    (elemento 0 -> coordenada x / elemento 1 -> coordenada y)*/
     Position(int[] position) {
             this.position[0] = position[0];
             this.position[1] = position[1];
     }
 
-    /*RETORNAMOS LAS POSICIONES DEL OBJETO EN CUESTIÓN*/
+    /*Retornamos las posiciones del objeto en cuestión*/
     int[] getPosition() {
         return this.position;
     }
 
-    /*RESETEAMOS LOS VALORES DE LAS POSICIONES DEL OBJETO EN CUESTIÓN*/
+    /*Reseteamos los valores de las posiciones del objeto en cuestión*/
     void setPosition(int[] proCoor) {
         this.position[0] = proCoor[0];
         this.position[1] = proCoor[1];
     }
 
-    /*REALIZAMOS OVERRIDE DEL MÉTODO equals YA QUE, EN UN MOMENTO DADO DE NUESTRO PROGRAMA, QUEREMOS COMPARAR INSTANCIAS DE ESTA
-    CLASE Y, ADEMÁS, PORQUE UTILIZAMOS LA CLASE COMO ÍNDICE DE UN CONTENEDOR MAP Y ES TIPO DE UN CONJUNTO(SET)*/
+    /*Realizamos override del método equals ya que, en un momento dado de nuestro programa, queremos comparar instancias de esta
+    clase y, además, porque utilizamos la clase como índice de un contenedor map y es tipo de un conjunto(set)*/
     @Override
     public boolean equals(Object o){
         if (o instanceof Position) {
@@ -37,8 +37,8 @@ class Position {
     }
 
 
-    /*REALIZAMOS OVERRIDE DEL MÉTODO hashCode PORQUE UTILIZAMOS LA CLASE COMO ÍNDICE DE UN CONTENEDOR MAP Y ES TIPO DE UN
-    CONJUNTO(SET)*/
+    /*Realizamos override del método hashCode porque utilizamos la clase como índice de un contenedor map y es tipo de un
+    conjunto(set)*/
     @Override
     public int hashCode() {
         int result = 17;

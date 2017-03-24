@@ -4,13 +4,13 @@ import java.util.List;
 /**
  * Created by Oscar on 17/03/2017.
  */
-/*CLASE Movement, DONDE GESTIONAREMOS LA DIRECCIÓN QUE DEBE TOMAR BENDER*/
+/*Clase Movement, donde gestionaremos la dirección que debe tomar Bender*/
 class Movement {
 
-    /*LA VARIABLE move CONTENDRÁ LAS DIRECCIONES QUE PUEDE TOMAR BENDER EN FORMA DE CARÁCTER, LAS CUÁLES LAS DEFINIMOS EN EL CONSTRUCTOR*/
+    /*La variable move contendrá las direcciones que puede tomar Bender en forma de carácter, las cuáles las definimos en el constructor*/
     private List<Character> move = new ArrayList<>();
 
-    /*LA VARIABLE dirNow CONTENDRÁ LA POSICIÓN DE LA DIRECCIÓN CORRESPONDIENTE DE BENDER EN UN MOMENTO DADO*/
+    /*La variable dirNow contendrá la posición de la dirección correspondiente de Bender en un momento dado*/
     private int dirNow;
 
     //CONSTRUCTOR//
@@ -18,26 +18,26 @@ class Movement {
         Collections.addAll(this.move, new Character[]{'S', 'E', 'N', 'W'});
     }
 
-    /*getMove RETORNA EL CARÁCTER CORRESPONDIENTE A LA DIRECCIÓN (dirNow) ACTUAL DE BENDER*/
+    /*El método getMove() retorna el carácter correspondiente a la dirección (dirNow) actual de Bender*/
     char getMove() {
         return this.move.get(this.dirNow);
     }
 
-    /*getDirNow RETORNA EL VALOR DE LA DIRECCIÓN ACTUAL DE BENDER*/
+    /*El método getDirNow retorna el valor de la dirección actual de Bender*/
     int getDirNow() {
         return this.dirNow;
     }
 
-    /*setDirNow MODIFICA EL VALOR DE LA DIRECCIÓN ACTUAL DE BENDER POR EL VALOR QUE NOS PASAN (COMPROBAMOS QUE EL VALOR QUE NOS
-    PASAN ES CORRECTO, YA QUE DICHO VALOR NO PUEDE SER MAYOR QUE 3 PORQUE LO UTILIZAMOS COMO ÍNDICE PARA OBTENER LA DIRECCIÓN EN
-    FORMA DE CARÁCTER)*/
+    /*El método setDirNow modifica el valor de la dirección actual de Bender por el valor que nos pasan (comprobamos que el valor
+    que nos pasan es correcto, ya que dicho valor no puede ser mayor que 3 porque lo utilizamos como índice para obtener la dirección
+    en forma de carácter*/
     void setDirNow(int pos) {
         this.dirNow = (pos > 3) ? 0 : pos;
     }
 
-    /*EN changeDir MODIFICAMOS EL ORDEN DE LAS DIRECCIONES QUE PUEDE COGER BENDER (AL ENCONTRAR UN INVERSOR, SUSTITUIMOS LA POSICIÓN
-    0 POR LA 2 (S por N), Y LA 1 POR LA 3 (W por E). DE ESTA FORMA MANTENEMOS LA MISMA LISTA MODIFICANDO SUS VALORES EN FUNCIÓN DE LOS REQUERIMIENTOS DEL
-    ENUNCIADO)*/
+    /*En el método changeDir modificamos el orden de las direcciones que puede coger Bender (al encontrar un inversor, sustituimos
+    la posición 0 por la 2 (S por N), y la 1 por la 3 (W por E). De esta forma mantenemos la misma lista modificando sus valores
+    en función de los requerimientos del enunciado*/
     void changeDir() {
         char provisional;
         for(int i = 0; i < 2; i++){
@@ -47,9 +47,9 @@ class Movement {
         }
     }
 
-    /*EN moving RETORNAMOS LA POSICIÓN QUE NOS PASAN INCREMENTANDO/DECREMENTANDO EL EJE X/Y DEPENDIENDO DE LA DIRECCIÓN ACTUAL DE
-    BENDER (this.getMove)(NOS PASAN UN OBJETO Position, POR ESO HACEMOS UNA COPIA DE LAS POSICIONES DE DICHO OBJETO PARA PODER TRABAJAR MÁS
-    CÓMODAMENTE)*/
+    /*En el método moving retornamos la posición que nos pasan incrementando/decrementando el eje X/Y dependiendo de la dirección
+    actual de Bender(this.getMove) (nos pasan un objeto Position, por eso hacemos una copia de las posiciones de dicho objeto para
+    poder trabajar más cómodamente*/
     int[] moving(Position posNow) {
         int[] retoorn = new int[posNow.getPosition().length];
         System.arraycopy(posNow.getPosition(), 0, retoorn, 0, 2);

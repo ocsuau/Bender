@@ -5,21 +5,20 @@ import java.util.*;
 public class Bender {
     private Mapa map;
     private Set<Position> teleports = new HashSet<Position>();
-    private Map<Position, Integer> todayNotDrink = new HashMap<Position, Integer>();
+    private Map<Position, Set<Character>> todayNotDrink = new HashMap<Position, Set<Character>>();
     private Movement m = new Movement();
     private Position posNowBender;
-    private Position posNowWinner;
 
     public Bender(String mapa) {
         this.map = new Mapa(mapa);
-        posNowBender = this.map.getBPos();
-        todayNotDrink.put(posNowBender, 1);
+        this.posNowBender = this.map.getBPos();
+        this.todayNotDrink.put(posNowBender, new HashSet<Character>());
+        this.todayNotDrink.get(posNowBender).add(this.m.getMove());
         this.teleports = this.map.getTeleports();
-        this.posNowWinner = this.map.getWinner();
     }
 
     public String run(){
-        if (this.posNowBender.getPosition()[0] == -1 || this.posNowWinner.getPosition()[0] == -1) {
+        if (this.posNowBender.getPosition()[0] == -1 || !this.map.getWinner() || (this.teleports.size() != 2 && this.teleports.size() != 0)) {
             return null;
         }
         Position proCoor;
@@ -78,9 +77,19 @@ public class Bender {
     }
 
     private boolean notExit(Position proCoor) {
-        int quantity = (todayNotDrink.containsKey(proCoor)) ? todayNotDrink.get(proCoor) : 0;
+   /*     int quantity = (todayNotDrink.containsKey(proCoor)) ? todayNotDrink.get(proCoor) : 0;
         if (quantity == 4) return true;
         todayNotDrink.put(proCoor,quantity + 1);
+        return false;*/
+        if (this.todayNotDrink.containsKey(proCoor)) {
+            if (this.todayNotDrink.get(proCoor).contains(this.m.getMove())) {
+                return true;
+            }
+            this.todayNotDrink.get(proCoor).add(this.m.getMove());
+        } else {
+            this.todayNotDrink.put(proCoor, new HashSet<Character>());
+            this.todayNotDrink.get(proCoor).add(this.m.getMove());
+        }
         return false;
     }
 }
