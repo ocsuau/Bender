@@ -70,6 +70,7 @@ public class Bender {
             posición resultanto existe una pared.*/
             proCoor = new Position(this.m.moving(posNowBender));
             if(this.map.getChar(proCoor.getPosition()) == '#'){
+
                 /*Si encontramos una pared, comprobamos si es la primera vez que choca con dicha pared de manera consecutiva gracias
                 a la variable rebootMove (De esta manera evitamos que, al chocar con la pared, Bender tome siempre la dirección sur/norte)*/
                 if(rebootMove){
