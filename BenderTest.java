@@ -208,6 +208,7 @@ public class BenderTest {
         assertEquals("SEENNNNNWWWWSSSS", bender.run());
     }
 
+    //Irregular
     @Test
     public void test14() {
         String mapa = "" +
@@ -223,6 +224,7 @@ public class BenderTest {
         assertEquals("SSSSSEEENNNNNEEE", bender.run());
     }
 
+    //Irregular
     @Test
     public void test15() {
         String mapa = "" +
@@ -238,6 +240,7 @@ public class BenderTest {
         assertEquals("SSSSSEEENNNNNEEEEEEEE", bender.run());
     }
 
+    //Irregular
     @Test
     public void test16() {
         String mapa = "" +
@@ -255,6 +258,7 @@ public class BenderTest {
         assertEquals("SEEWWWWWWWWSSEESSSSNNNNNNNWWWWWSS", bender.run());
     }
 
+    //Irregular sin salida
     @Test
     public void test17() {
         String mapa = "" +
@@ -272,6 +276,7 @@ public class BenderTest {
         assertNull(bender.run());
     }
 
+    //Sin salida
     @Test
     public void test18() {
         String mapa = "" +
@@ -286,6 +291,8 @@ public class BenderTest {
         Bender bender = new Bender(mapa);
         assertNull(bender.run());
     }
+
+    //Sin X
     @Test
     public void test19() {
         String mapa = "" +
@@ -300,6 +307,8 @@ public class BenderTest {
         Bender bender = new Bender(mapa);
         assertNull(bender.run());
     }
+
+    //Sin $
     @Test
     public void test20() {
         String mapa = "" +
@@ -315,6 +324,7 @@ public class BenderTest {
         assertNull(bender.run());
     }
 
+    //Doble mapa
     @Test
     public void test21(){
         String mapa = "" +
@@ -330,6 +340,7 @@ public class BenderTest {
         assertEquals("SS",bender.run());
     }
 
+    //Doble mapa con T e I
     @Test
     public void test22() {
         String mapa = "" +
@@ -347,6 +358,7 @@ public class BenderTest {
         assertEquals("SSNNN", bender.run());
     }
 
+    //Irregular
     @Test
     public void test23() {
         String mapa = "" +
@@ -362,6 +374,7 @@ public class BenderTest {
         assertEquals("EEEEEEEEEEENWWWWWWWNNSSSSSEE", bender.run());
     }
 
+    //Irregular
     @Test
     public void test24() {
         String mapa = "" +
@@ -378,6 +391,7 @@ public class BenderTest {
         assertEquals("SNNNNNNWWWWWWWWWWWW", bender.run());
     }
 
+    //Sólo una T
     @Test
     public void test25() {
         String mapa = "" +
@@ -393,6 +407,7 @@ public class BenderTest {
         assertNull(bender.run());
     }
 
+    //Sin salida
     @Test
     public void test26() {
         String mapa = "" +
@@ -405,6 +420,7 @@ public class BenderTest {
         assertNull(bender.run());
     }
 
+    //"Especialito"
     @Test
     public void test27() {
         String mapa = "" +
@@ -417,6 +433,7 @@ public class BenderTest {
         assertEquals("SNNSSEE", bender.run());
     }
 
+    //Mapa con más movimientos que posiciones posibles
     @Test
     public void test28() {
         String mapa = "" +
@@ -428,6 +445,7 @@ public class BenderTest {
         assertEquals("SNSEN", bender.run());
     }
 
+    //Mapa con más de 1 X
     @Test
     public void test29() {
         String mapa = "" +
@@ -443,6 +461,7 @@ public class BenderTest {
         assertNull(bender.run());
     }
 
+    //Mapa con más de un $
     @Test
     public void test30() {
         String mapa = "" +
