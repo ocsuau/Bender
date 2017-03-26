@@ -14,16 +14,23 @@ class Mapa {
     private Set<Position> teleports = new HashSet<>();
 
     /*- bPos        -> Variable tipo Position donde almacenamos las coordenadas de la posición de Bender en el mapa para
-                  posteriormente pasarle dichos valores a la clase Bender*/
-    private Position bPos;
+                  posteriormente pasarle dichos valores a la clase Bender.
+
+                  Puede darse el caso de que en el mapa no haya ningún carácter 'X', por eso inicializamos por defecto esta variable
+                  con una nueva instancia de la clase Position y las coordenadas -1, -1, valores que en la clase Bender comprobaremos
+                  para determinar si el mapa contiene o no el carácter 'X'*/
+    private Position bPos = new Position(new int[]{-1, -1});
 
     /*- wPos        -> booleano donde reflejamos la existencia/inexistencia del carácter '$' (Comprobamos que en el mapa tengamos el
                   carácter que condiciona la victoria para poder retornar null antes de empezar con el algoritmo del método
                   Bender.run() en caso de no haber dicho carácter*/
     private boolean wPos;
 
+
     /*Constructor de Mapa*/
     Mapa(String mapa) {
+        /*Creamos repeatW, variable auxiliar para comprobar que no tenemos más de un carácter '$'*/
+        boolean repeatW = true;
 
         /*Pasamos el string que nos pasan a un array de string con el método 'split()'. Posteriormente recorreremos cada carácter
         de cada elemento de dicho array.*/
@@ -34,24 +41,48 @@ class Mapa {
             cada carácter la añadiremos a la lista que acabamos de instanciar con pequeñas restricciones*/
             this.map.add(new ArrayList<Character>());
             for(int j = 0; j < lineMap[i].length(); j++){
-
-                /*En caso de que el carácter que estemos tratando sea la 'X' (Bender), en nuestra lista de listas de carácteres añadiremos
-                un espacio. No almacenamos el carácter que representa a Bender porque su posición y movimientos ya los controlamos desde
-                fuera y añadiendo un espacio nos evitamos problema de incongruencia a la hora de recorrer el mapa.*/
-
-                /*Además, aprovechamos para almacenar la posición de bender en la variable bPos creando una instancia de la clase Position,
-                que posteriormente enviaremos a la clase Bender*/
                 if (lineMap[i].charAt(j) == 'X') {
+
+                    /*En caso de que el carácter que estemos tratando sea la 'X' (Bender), en nuestra lista de listas de carácteres
+                    añadiremos un espacio. No almacenamos el carácter que representa a Bender porque su posición y movimientos ya
+                    los controlamos desde fuera y añadiendo un espacio nos evitamos problemas de incongruencia a la hora de recorrer
+                    el mapa.*/
                     this.map.get(i).add(' ');
-                    this.bPos = new Position(new int[]{i, j});
+
+                    /*Seguidamente comprobaremos si en el mapa tenemos más de una 'X'.
+                    Como hemos definido en la declaración de las variables miembro de esta clase, bPos contiene una instancia de la
+                    clase Position con las coordenadas -1 -1.
+
+                    Por lo tanto, si, al querer guardar las posiciones de Bender, la segunda coordenada de bPos es distinta a -1,
+                    significa que antes ya hemos almacenado su posición y, por lo tanto, tenemos el carácter 'X' repetido.
+
+                    En este caso resetearemos las coordenadas de bPos con los valores -1 y 0 (ponemos -1 en la coordenada X para
+                    que, en la clase Bender, se sepa que debe retornar null, y ponemos 0 en la coordenada Y para que, en las futuras
+                    comprobaciones, se siga entendiendo que hay 'X' repetidas)
+
+                    En cambio, si la coordenada Y de bPos es igual a -1, significa que aún no habiamos introducido ninguna
+                    coordenada y, por lo tanto, es la primera 'X' que encontramos, reseteamos la posición de bPos con las coordenadas
+                    correctas*/
+                    this.bPos.setPosition((this.bPos.getPosition()[1] == -1) ? new int[]{i, j} : new int[]{-1, 0});
+
                     /*Realizo continue para evitar comprobaciones posteriores innecesarias y la introducción involuntaria del carácter
                     "X" a nuestro mapa*/
                     continue;
-
-                /*Si el carácter que estamos comprobando es "$", inicializamos wPos como true. Posteriormente transmitiremos esta información
-                a la clase Bender.*/
                 } else if (lineMap[i].charAt(j) == '$') {
-                    this.wPos = true;
+                    /*Si el carácter que estamos comprobando es "$" comprobamos el valor de repeatW. Si vale true, significa que
+                    el carácter '$' que estamos tratando es el primero que hemos encontrado y, por lo tanto, no tenemos porque
+                    pensar que está repetido, así que asignamos a this.wPos el valor true, y a repeatW le asignamos el valor false.*/
+                    if (repeatW) {
+                        this.wPos = true;
+                        repeatW = false;
+                    }
+
+                    /*En cambio, si repeatW es false, significa que antes ya hemos registrado la entrada de un carácter '$', así que
+                    asignamos a this.wPos false para que en la clase Bender se sepa que hay más de un carácter '$' y, por lo tanto,
+                    debe retornar null.*/
+                    else {
+                        this.wPos = false;
+                    }
 
                 /*En este punto sabemos que en carácter en cuestión no es ni la "X" ni el "$", por lo tanto, comprobamos si es una "T"
                 para almacenar en teleports su posición para su posterior gestión en la clase Bender (Almacenamos las posiciones de los
@@ -69,13 +100,8 @@ class Mapa {
     /*Método getBPos(), donde retornamos a la clase Bender la posición del Robot que previamente hemos almacenado*/
     Position getBPos() {
 
-        /*En caso de que en el mapa que nos han pasado como parámetro en nuestro constructor no hubiera el carácter "X", el valor
-        de la variable bPos sería null, por lo tanto retornaremos a Bender una instancia de la clase Position con las posiciones
-        -1 -1, valores que en la clase Bender comprobaremos para identificar si el mapa es correcto (contiene robot) o no*/
-        if (this.bPos != null) {
+        /*Retornamos el valor de bPos*/
             return this.bPos;
-        }
-        return new Position(new int[]{-1, -1});
     }
 
     /*Método getTeleports, donde retornaremos las posiciones de los teleports que contiene el mapa (En caso de no contener Teleports,
