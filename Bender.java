@@ -65,6 +65,7 @@ public class Bender {
 
         //Iniciamos el algoritmo principal
         while(true){
+
             /*Almacenamos en proCoor la posición en la que debería estar Bender teniendo en cuenta su dirección actual. (Realizamos
             dicha operación a través del método moving de la clase Movement). Seguidamente comprobamos en la clase mapa si en la
             posición resultanto existe una pared.*/
@@ -74,11 +75,13 @@ public class Bender {
                 /*Si encontramos una pared, comprobamos si es la primera vez que choca con dicha pared de manera consecutiva gracias
                 a la variable rebootMove (De esta manera evitamos que, al chocar con la pared, Bender tome siempre la dirección sur/norte)*/
                 if(rebootMove){
+
                     /*En caso de chocar por primera vez consecutiva con la pared, reiniciamos el valor que indica la dirección que debe
                     tomar Bender*/
                     this.m.setDirNow(0);
                     rebootMove = false;
                 } else {
+
                     /*En caso negativo, incrementamos el valor que indica su dirección*/
                     this.m.setDirNow(this.m.getDirNow() + 1);
                 }
@@ -97,20 +100,20 @@ public class Bender {
 
             /*Comprobamos si el mapa tiene salida o no en el método notExit() en función de la cantidad de veces que hemos pasado
             sobre una posición (almacenando dicha cantidad en la variables notExit)*/
-            if(notExit(proCoor)){
+            if (notExit(proCoor)) {
                 return null;
             }
 
             /*Comprobamos si en la posición en la que está Bender es un espacio. En caso afirmativo, realizamos un continue para
             evitar comprobaciones innecesarias.*/
-            if(this.map.getChar(proCoor.getPosition()) == ' '){
+            if (this.map.getChar(proCoor.getPosition()) == ' ') {
                 continue;
             }
 
             /*En caso negativo, comprobaremos sobre qué carácter está Bender, aplicando los cambios correspondientes.
             En caso de que dicho carácter sea '$', el método changeStat nos retornará true, y, por lo tanto, retornaremos
             timeToDrink en forma de String*/
-            else if(changeStat(proCoor)){
+            else if (changeStat(proCoor)) {
                 return timeToDrink.toString();
             }
         }

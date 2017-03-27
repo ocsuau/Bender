@@ -445,7 +445,7 @@ public class BenderTest {
         assertEquals("SNSEN", bender.run());
     }
 
-    //Mapa con más de 1 X
+    //Mapa con más de una X
     @Test
     public void test29() {
         String mapa = "" +

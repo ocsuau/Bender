@@ -29,10 +29,10 @@ class Movement {
     }
 
     /*El método setDirNow modifica el valor de la dirección actual de Bender por el valor que nos pasan (comprobamos que el valor
-    que nos pasan es correcto, ya que dicho valor no puede ser mayor que 3 porque lo utilizamos como índice para obtener la dirección
-    en forma de carácter*/
+    que nos pasan es correcto, ya que dicho valor no puede ser mayor que 3 ni menor que 0 porque lo utilizamos como índice para
+    obtener la dirección en forma de carácter*/
     void setDirNow(int newDir) {
-        this.dirNow = (newDir > 3 && newDir < 0) ? 0 : newDir;
+        this.dirNow = (newDir > 3 || newDir < 0) ? 0 : newDir;
     }
 
     /*En el método changeDir modificamos el orden de las direcciones que puede coger Bender (al encontrar un inversor, sustituimos
