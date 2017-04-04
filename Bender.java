@@ -15,8 +15,8 @@ public class Bender {
     posición para comprobar si el mapa tiene solución*/
     private Map<Position, Integer> notExit = new HashMap<>();
 
-    /*Variable m, instancia de la clase Movement para gestionar los movimientos del robot*/
-    private Movement m = new Movement();
+    /*Variable move, instancia de la clase Movement para gestionar los movimientos del robot*/
+    private Movement move = new Movement();
 
     /*Variable posNowBender, instancia de la clase Position donde almacenamos la posición inicial del robot, valores que nos transmite
     la clase Mapa*/
@@ -69,7 +69,7 @@ public class Bender {
             /*Almacenamos en proCoor la posición en la que debería estar Bender teniendo en cuenta su dirección actual. (Realizamos
             dicha operación a través del método moving de la clase Movement). Seguidamente comprobamos en la clase mapa si en la
             posición resultanto existe una pared.*/
-            proCoor = new Position(this.m.moving(posNowBender));
+            proCoor = new Position(this.move.moving(posNowBender));
             if(this.map.getChar(proCoor.getPosition()) == '#'){
 
                 /*Si encontramos una pared, comprobamos si es la primera vez que choca con dicha pared de manera consecutiva gracias
@@ -78,12 +78,12 @@ public class Bender {
 
                     /*En caso de chocar por primera vez consecutiva con la pared, reiniciamos el valor que indica la dirección que debe
                     tomar Bender*/
-                    this.m.setDirNow(0);
+                    this.move.setDirNow(0);
                     rebootMove = false;
                 } else {
 
                     /*En caso negativo, incrementamos el valor que indica su dirección*/
-                    this.m.setDirNow(this.m.getDirNow() + 1);
+                    this.move.setDirNow(this.move.getDirNow() + 1);
                 }
                 /*Realizamos continue para evitar comprobaciones innecesarias y porque, si no lo hicieramos, podríamos comprobar
                 varias veces sobre que carácter está Bender sin haberse modivo, y, por consecuencia, aplicar cambios que ya se han
@@ -96,7 +96,7 @@ public class Bender {
             al StringBuilder a retornar (timeToDrink) el carácter correspondiente a la dirección que ha tomado Bender.*/
             this.posNowBender.setPosition(proCoor.getPosition());
             rebootMove = true;
-            timeToDrink.append(m.getMove());
+            timeToDrink.append(move.getMove());
 
             /*Comprobamos si el mapa tiene salida o no en el método notExit() en función de la cantidad de veces que hemos pasado
             sobre una posición (almacenando dicha cantidad en la variables notExit)*/
@@ -128,16 +128,15 @@ public class Bender {
         switch (c) {
 
             /*Si el carácter es una I, cambiamos el orden de preferencias de dirección de Bender a través del método changeDir de la
-            variable m (instancia de la clase Movement) y reiniciamos el índice del movimiento que le toca hacer a Bender a través del
+            variable move (instancia de la clase Movement) y reiniciamos el índice del movimiento que le toca hacer a Bender a través del
             método setDirNow de la misma variable*/
             case 'I':
-                this.m.changeDir();
-                this.m.setDirNow(0);
+                this.move.changeDir();
                 break;
 
-            /*Si el carácter es una T, accedemos al método getTeleport para evaluar la nueva posición de Bender*/
+            /*Si el carácter es una T, accedemos al método changeTeleport para evaluar la nueva posición de Bender*/
             case 'T':
-                this.getTeleport(proCoor);
+                this.changeTeleport(proCoor);
                 break;
 
             /*Finalmente si el carácter es un $, significa que Bender ha llegado a la condición de victoria y retornamos true*/
@@ -149,10 +148,10 @@ public class Bender {
         return false;
     }
 
-    /*Método getTeleport, donde comparamos las posiciones de los teleports del mapa con la posición actual de Bender, (La comparación
+    /*Método changeTeleport, donde comparamos las posiciones de los teleports del mapa con la posición actual de Bender, (La comparación
     la hacemos a través del método equals de la clase Position) de tal forma que si las posiciones no coinciden, la nueva posición
     de Bender será la posición del teleport que estemos tratando en ése momento.*/
-    private void getTeleport(Position proCoor) {
+    private void changeTeleport(Position proCoor) {
         for (Position i : this.teleports) {
             if (!i.equals(proCoor)) {
                 this.posNowBender.setPosition(i.getPosition());

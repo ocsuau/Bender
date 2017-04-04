@@ -45,6 +45,7 @@ class Movement {
             this.move.set(i + 2,this.move.get(i));
             this.move.set(i,provisional);
         }
+        setDirNow((this.dirNow < 2) ? this.dirNow + 2 : this.dirNow - 2);
     }
 
     /*En el método moving retornamos la posición que nos pasan incrementando/decrementando el eje X/Y dependiendo de la dirección

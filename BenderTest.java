@@ -263,7 +263,7 @@ public class BenderTest {
     public void test17() {
         String mapa = "" +
                 "############\n" +
-                "#    I     #\n" +
+                "##   I     #\n" +
                 "#      #####\n" +
                 "#$     #\n" +
                 "#### T #######\n" +
@@ -355,7 +355,7 @@ public class BenderTest {
                 "   # #\n" +
                 "   ###";
         Bender bender = new Bender(mapa);
-        assertEquals("SSNNN", bender.run());
+        assertEquals("SSSNNNN", bender.run());
     }
 
     //Irregular
@@ -475,5 +475,21 @@ public class BenderTest {
                 "#######";
         Bender bender = new Bender(mapa);
         assertNull(bender.run());
+    }
+
+    @Test
+    public void test31() {
+        String mapa = "" +
+                "   #######\n" +
+                "   # XTI #\n" +
+                "   #    $#\n" +
+                "####    #####\n" +
+                "#          T#\n" +
+                "####     ####\n" +
+                "   #    I#\n" +
+                "   #     #\n" +
+                "   #######";
+        Bender bender = new Bender(mapa);
+        assertEquals("SSSSSSEEENNNWWWWWWWEEEEEEEEEEEES", bender.run());
     }
 }
